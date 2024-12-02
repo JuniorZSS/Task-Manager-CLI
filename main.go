@@ -2,11 +2,17 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"os"
 )
 
 var tasks []string
+
+type Task struct {
+	Description string `json:"description"`
+	Completed   bool   `json:"completed"`
+}
 
 func addTask() {
 	reader := bufio.NewReader(os.Stdin)
@@ -99,4 +105,30 @@ func completeTask() {
 
 	tasks[taskIndex-1] = tasks[taskIndex-1] + " (Завершена)"
 	fmt.Println("Задача завершена.")
+}
+
+func saveTaskToFile(filename string) {
+	// Создаём или перезаписывем задачи
+	file, err := os.Create(filename)
+	if err != nil {
+		fmt.Println("Ошибка при создании файла: ", err)
+		return
+	}
+	defer file.Close()
+
+	// Преобразование задачи в json
+	data, err := json.Marshal(tasks)
+	if err != nil {
+		fmt.Println("Ошибка при создании json файла: ", err)
+		return
+	}
+
+	// Сохраняем задачи в файл
+	_, err = file.Write(data)
+	if err != nil {
+		fmt.Println("Ошибка при записи в файл: ", err)
+		return
+	}
+
+	fmt.Println("Задачи успешно сохранены!")
 }
