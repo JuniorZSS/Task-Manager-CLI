@@ -53,8 +53,11 @@ func main() {
 		case 4:
 			completeTask()
 		case 5:
-			fmt.Println("Выход из программы.")
+			fmt.Println("Завершить задачу — в разработке!")
+		case 6:
+			fmt.Println("До свидания!")
 			return
+
 		default:
 			fmt.Println("Неверный выбор. Попробуйте снова.")
 		}
